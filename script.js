@@ -1,12 +1,48 @@
-function saveFeature() {
-  let name = document.getElementById("name-field").value;
-  let js = document.getElementById("js-field").value;
+import Components from './components.js'
 
-  // create button
-  let button = document.createElement("button");
-  button.innerHTML = name
-  button.onclick = () => { eval(js); };
-  document.getElementById("features-list").appendChild(button);
+let currentDialog;
+
+window.addFeature = () => {
+  currentDialog = Components.Dialog(
+    "New Feature", `
+      <label class="mdc-text-field">
+        <div class="mdc-text-field__ripple"></div>
+        <input id="feature-title-field" class="mdc-text-field__input" type="text" aria-labelledby="feature-title-field">
+        <span class="mdc-floating-label">Feature Title</span>
+        <div class="mdc-line-ripple"></div>
+      </label>
+      <label class="mdc-text-field mdc-text-field--textarea">
+        <textarea id="feature-js-field" class="mdc-text-field__input" aria-labelledby="feature-js-field" rows="8" cols="40"></textarea>
+        <div class="mdc-notched-outline">
+          <div class="mdc-notched-outline__leading"></div>
+          <div class="mdc-notched-outline__notch">
+            <label class="mdc-floating-label">Feature JavaScript</label>
+          </div>
+          <div class="mdc-notched-outline__trailing"></div>
+        </div>
+      </label>
+    `, [
+      Components.DialogAction("Cancel", closeDialog),
+      Components.DialogAction("Test", null),
+      Components.DialogAction("Save", saveFeature)
+    ]
+  );
+  document.body.appendChild(currentDialog);
+}
+
+function closeDialog() {
+  currentDialog.parentNode.removeChild(currentDialog);
+}
+
+function saveFeature() {
+  let title = document.getElementById("feature-title-field").value;
+  let js = document.getElementById("feature-js-field").value;
+
+  document.getElementById("features-list").appendChild(
+    Components.Button(null, title, () => { eval(js) })
+  );
+
+  closeDialog();
 }
 
 function displayJSON(json) {
@@ -27,43 +63,33 @@ function createJSONUI(json) {
   // if array
   if (json.length > 0) {
     let keys = Object.keys(json[0]);
-    let table = document.createElement("table");
-    let header = document.createElement("tr");
-
-    // create header from keys
-    keys.forEach(key => {
-      let headerItem = document.createElement("th");
-      headerItem.innerHTML = key;
-      header.appendChild(headerItem);
-    });
-    table.appendChild(header);
+    let matrix = [];
+    let row = 0;
 
     // create rows for each item
     json.forEach(element => {
-      let row = document.createElement("tr");
+      matrix.push([]);
 
       // create row items for each value
       keys.forEach(key => {
         let value = element[key];
-        let rowItem = document.createElement("td");
-        
         if (typeof value == 'object') {
-          let button = document.createElement("button");
-          button.innerHTML = 'Open'
-          button.onclick = () => { displayJSON(value); };
-          rowItem.appendChild(button);
+          matrix[row].push(
+            Components.Button(null, "Open", () => { displayJSON(value); })
+          );
         } 
         else {
-          rowItem.innerHTML = element[key];
+          matrix[row].push(value);
         }
-
-        row.appendChild(rowItem);
       });
 
-      table.appendChild(row);
+      row++;
     });
 
-    document.getElementById("display-area").appendChild(table);
+    // display table
+    document.getElementById("display-area").appendChild(
+      Components.Table(keys, matrix)
+    );
   }
 
   // if object
@@ -71,14 +97,10 @@ function createJSONUI(json) {
     Object.keys(json).forEach(key => {
       let value = json[key];
 
-      // display the data
-      let card = document.createElement("div");
-      if (typeof value == 'object') {
-        card.innerHTML = key + ":";
-      } else {
-        card.innerHTML = key + ": " + value;
-      }
-      document.getElementById("display-area").appendChild(card);
+      // display card or headline
+      document.getElementById("display-area").appendChild(
+        typeof value == 'object' ? Components.Headline(key) : Components.Card(value, key)
+      );
       
       if (typeof value == 'object') {
         createJSONUI(value);

@@ -4,18 +4,20 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Databird</title>
+
+  <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
 </head>
 <body>
-  <input id="name-field" placeholder="Feature name"></input>
-  <br><br>
-  <textarea id="js-field" placeholder="Feature JavaScript" rows="20" cols="100"></textarea>
-  <br>
-  <button onclick="saveFeature()">Save Feature</button>
+  <button class="mdc-button mdc-button--raised" onclick="addFeature()">
+    <div class="mdc-button__ripple"></div>
+    <span class="mdc-button__label">Add</span>
+  </button>
   <br><br>
   <div id="features-list"></div>
   <br>
   <div id="display-area"></div>
     
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
