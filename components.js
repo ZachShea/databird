@@ -45,6 +45,7 @@ class Components {
   static Table(headers, matrix) {
     let element = document.createElement("div");
     element.classList.add("mdc-data-table");
+    element.style.marginBottom = "16px";
     element.innerHTML = `
       <table class="mdc-data-table__table">
         <thead><tr id="header" class="mdc-data-table__header-row"></tr></thead>
@@ -78,7 +79,8 @@ class Components {
   static Card(title, subtitle) {
     let element = document.createElement("div");
     element.classList.add("mdc-card");
-    element.style.width = "260px";
+    element.style.width = "256px";
+    element.style.marginBottom = "16px";
     element.innerHTML = `
       <div class="mdc-card__primary-action" tabindex="0">
         <div style="padding: 16px;">
@@ -96,6 +98,15 @@ class Components {
     element.classList.add("mdc-typography--headline6");
     element.style.margin = "0";
     element.innerHTML = text
+    return element;
+  }
+
+  static DrawerItem(text, id, onclick) {
+    let element = document.createElement("a");
+    element.classList.add("mdc-list-item");
+    element.onclick = onclick
+    element.id = id;
+    element.innerHTML = `<span class="mdc-list-item__text">${text}</span>`;
     return element;
   }
 }

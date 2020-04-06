@@ -4,7 +4,7 @@ let currentDialog;
 
 window.addFeature = () => {
   currentDialog = Components.Dialog(
-    "New Feature", `
+    "Create Feature", `
       <label class="mdc-text-field">
         <div class="mdc-text-field__ripple"></div>
         <input id="feature-title-field" class="mdc-text-field__input" type="text" aria-labelledby="feature-title-field">
@@ -23,7 +23,7 @@ window.addFeature = () => {
       </label>
     `, [
       Components.DialogAction("Cancel", closeDialog),
-      Components.DialogAction("Test", null),
+      // Components.DialogAction("Test", null),
       Components.DialogAction("Save", saveFeature)
     ]
   );
@@ -37,12 +37,37 @@ function closeDialog() {
 function saveFeature() {
   let title = document.getElementById("feature-title-field").value;
   let js = document.getElementById("feature-js-field").value;
+  
+  // make ID
+  let id;
+  let lastDrawerItem = document.getElementById("features-list").lastChild;
+  if (lastDrawerItem == null) {
+    id = "feature-1";
+  } else {
+    id = "feature-" + (parseInt(lastDrawerItem.id.split("-")[1]) + 1);
+  }
 
+  // add to drawer
   document.getElementById("features-list").appendChild(
-    Components.Button(null, title, () => { eval(js) })
+    Components.DrawerItem(title, id, () => { 
+      selectDrawerItem(id);
+      eval(js);
+    })
   );
 
   closeDialog();
+}
+
+function selectDrawerItem(id) {
+  let activated = "mdc-list-item--activated";
+  
+  // deselect all
+  document.getElementById("features-list").childNodes.forEach(drawerItem => {
+    drawerItem.classList.remove(activated);
+  });
+
+  // select new item
+  document.getElementById(id).classList.add(activated);
 }
 
 function displayJSON(json) {
@@ -60,7 +85,7 @@ function removeUI() {
 }
 
 function createJSONUI(json) {
-  // if array
+  // ARRAY //
   if (json.length > 0) {
     let keys = Object.keys(json[0]);
     let matrix = [];
@@ -73,7 +98,10 @@ function createJSONUI(json) {
       // create row items for each value
       keys.forEach(key => {
         let value = element[key];
-        if (typeof value == 'object') {
+        if (value == null) {
+          matrix[row].push("null");
+        }
+        else if (typeof value == 'object') {
           matrix[row].push(
             Components.Button(null, "Open", () => { displayJSON(value); })
           );
@@ -92,7 +120,7 @@ function createJSONUI(json) {
     );
   }
 
-  // if object
+  // OBJECT //
   else {
     Object.keys(json).forEach(key => {
       let value = json[key];
@@ -112,32 +140,22 @@ function createJSONUI(json) {
 function createCSVUI(csv) {
   let lines = csv.split('\n');
   let headerItems = lines[0].split(',');
-  let table = document.createElement("table");
-  let header = document.createElement("tr");
+  let matrix = [];
+  let row = 0;
 
-  // create header from first line
-  headerItems.forEach(item => {
-    let headerItem = document.createElement("th");
-    headerItem.innerHTML = item;
-    header.appendChild(headerItem);
-  });
-  table.appendChild(header);
-
-  // create rows for each item
   lines.shift();
   lines.forEach(line => {
-    let lineItems = line.split(',');
-    let row = document.createElement("tr");
+    matrix.push([]);
 
-    // create row items for each value
+    let lineItems = line.split(',');
     lineItems.forEach(item => {
-      let rowItem = document.createElement("td");
-      rowItem.innerHTML = item;
-      row.appendChild(rowItem);
+      matrix[row].push(item);
     });
 
-    table.appendChild(row);
+    row++;
   });
 
-  document.getElementById("display-area").appendChild(table);
+  document.getElementById("display-area").appendChild(
+    Components.Table(headerItems, matrix)
+  );
 }

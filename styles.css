@@ -1,0 +1,11 @@
+#content {
+    display: flex;
+}
+
+#display-area {
+    padding: 16px;
+    height: calc(100vh - 32px);
+    width: 100%;
+    overflow: auto;
+    background-color: #f8f8f8;
+}

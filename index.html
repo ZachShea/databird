@@ -7,17 +7,34 @@
 
   <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
   <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+  <link href="./styles.css" rel="stylesheet">
 </head>
-<body>
-  <button class="mdc-button mdc-button--raised" onclick="addFeature()">
-    <div class="mdc-button__ripple"></div>
-    <span class="mdc-button__label">Add</span>
-  </button>
-  <br><br>
-  <div id="features-list"></div>
-  <br>
-  <div id="display-area"></div>
+
+<body style="margin: 0;">
+  <div id="content">
+    <!-- FEATURES DRAWER -->
+    <aside class="mdc-drawer" style="height: 100vh; float: left;">
+      <div class="mdc-drawer__header">
+        <h3 class="mdc-drawer__title">Databird</h3>
+        <h6 class="mdc-drawer__subtitle">JSON and CSV data visualizer</h6>
+      </div>
+      <div class="mdc-drawer__content">
+        <nav class="mdc-list">
+          <div id="features-list" style="margin-bottom: 8px;"></div>
+          <hr class="mdc-list-divider">
+          <button class="mdc-button mdc-button--raised" onclick="addFeature()" style="margin: 8px;">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Create Feature</span>
+          </button>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- DISPLAY FEATURE -->
+    <div id="display-area"></div>
+  </div>
     
+  <!-- SCRIPTS -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
