@@ -1,11 +1,49 @@
-#content {
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#wrapper {
     display: flex;
 }
 
-#display-area {
-    padding: 16px;
-    height: calc(100vh - 32px);
+#features-list {
+    margin-bottom: 8px;
+}
+
+.mdc-drawer {
+    height: 100vh; 
+    float: left;
+}
+
+#add-button {
+    margin: 8px;
+}
+
+#right-side {
     width: 100%;
+}
+
+.mdc-top-app-bar {
+    width: calc(100% - 256px);
+    color: black;
+    background-color: white;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+#delete-button {
+    color: #b00020;
+}
+#delete-button > .mdc-button__ripple::before,
+#delete-button > .mdc-button__ripple::after {
+    background-color: #b00020;
+}
+
+#display-area {
+    padding: 32px;
+    padding-top: 96px;
+    height: calc(100vh - 128px);
+    width: calc(100% - 64px);
     overflow: auto;
     background-color: #f8f8f8;
 }

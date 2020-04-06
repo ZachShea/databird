@@ -10,19 +10,19 @@
   <link href="./styles.css" rel="stylesheet">
 </head>
 
-<body style="margin: 0;">
-  <div id="content">
+<body>
+  <div id="wrapper">
     <!-- FEATURES DRAWER -->
-    <aside class="mdc-drawer" style="height: 100vh; float: left;">
+    <aside class="mdc-drawer">
       <div class="mdc-drawer__header">
         <h3 class="mdc-drawer__title">Databird</h3>
         <h6 class="mdc-drawer__subtitle">JSON and CSV data visualizer</h6>
       </div>
       <div class="mdc-drawer__content">
         <nav class="mdc-list">
-          <div id="features-list" style="margin-bottom: 8px;"></div>
+          <div id="features-list"></div>
           <hr class="mdc-list-divider">
-          <button class="mdc-button mdc-button--raised" onclick="addFeature()" style="margin: 8px;">
+          <button id="add-button" class="mdc-button" onclick="addFeature()">
             <div class="mdc-button__ripple"></div>
             <span class="mdc-button__label">Create Feature</span>
           </button>
@@ -30,8 +30,18 @@
       </div>
     </aside>
 
-    <!-- DISPLAY FEATURE -->
-    <div id="display-area"></div>
+    <!-- DISPLAY CONTENT -->
+    <div id="right-side">
+      <header class="mdc-top-app-bar">
+        <div class="mdc-top-app-bar__row">
+          <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <span id="current-feature-title" class="mdc-top-app-bar__title">Select an item on the left</span>
+          </section>
+          <section id="current-feature-buttons" class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end"></section>
+        </div>
+      </header>
+      <div id="display-area"></div>
+    </div>
   </div>
     
   <!-- SCRIPTS -->

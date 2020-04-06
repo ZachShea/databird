@@ -101,7 +101,7 @@ class Components {
     return element;
   }
 
-  static DrawerItem(text, id, onclick) {
+  static DrawerItem(id, text, onclick) {
     let element = document.createElement("a");
     element.classList.add("mdc-list-item");
     element.onclick = onclick

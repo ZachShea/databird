@@ -1,6 +1,18 @@
 import Components from './components.js'
 
-let currentDialog;
+//////////////
+// UI LOGIC //
+//////////////
+
+let currentDialog, currentFeatureID;
+
+window.onload = () => {
+  // load features
+  Object.keys(localStorage).forEach(key => {
+    let feature = JSON.parse(localStorage.getItem(key));
+    addDrawerItem(key, feature.title, feature.js);
+  });
+}
 
 window.addFeature = () => {
   currentDialog = Components.Dialog(
@@ -30,8 +42,13 @@ window.addFeature = () => {
   document.body.appendChild(currentDialog);
 }
 
+function removeFromDOM(element) {
+  if (element == null) return;
+  element.parentNode.removeChild(element);
+}
+
 function closeDialog() {
-  currentDialog.parentNode.removeChild(currentDialog);
+  removeFromDOM(currentDialog);
 }
 
 function saveFeature() {
@@ -47,18 +64,23 @@ function saveFeature() {
     id = "feature-" + (parseInt(lastDrawerItem.id.split("-")[1]) + 1);
   }
 
-  // add to drawer
-  document.getElementById("features-list").appendChild(
-    Components.DrawerItem(title, id, () => { 
-      selectDrawerItem(id);
-      eval(js);
-    })
-  );
+  // save
+  localStorage.setItem(id, JSON.stringify({ "title" : title, "js" : js }));
+  addDrawerItem(id, title, js);
 
   closeDialog();
 }
 
-function selectDrawerItem(id) {
+function addDrawerItem(id, title, js) {
+  document.getElementById("features-list").appendChild(
+    Components.DrawerItem(id, title, () => { 
+      selectDrawerItem(id, title);
+      eval(js);
+    })
+  );
+}
+
+function selectDrawerItem(id, title) {
   let activated = "mdc-list-item--activated";
   
   // deselect all
@@ -68,7 +90,27 @@ function selectDrawerItem(id) {
 
   // select new item
   document.getElementById(id).classList.add(activated);
+  document.getElementById("current-feature-title").innerHTML = title;
+  
+  // draw feature button
+  let deleteButtonID = "delete-button";
+  removeFromDOM(document.getElementById(deleteButtonID));
+  let deleteButton = Components.Button(null, "Delete Feature", deleteFeature);
+  deleteButton.id = deleteButtonID;
+  document.getElementById("current-feature-buttons").appendChild(deleteButton);
+
+  currentFeatureID = id;
 }
+
+function deleteFeature() {
+  localStorage.removeItem(currentFeatureID);
+  location.reload();
+}
+
+
+//////////////////////////////
+// FEATURE JAVASCRIPT LOGIC //
+//////////////////////////////
 
 function displayJSON(json) {
   removeUI();
