@@ -39,5 +39,5 @@ displayJSON({ data:
 ```
 
 ```
-    displayCSV("first, second, third\n1, 2, 3\none, two, three");
+displayCSV("first, second, third\n1, 2, 3\none, two, three");
 ```
