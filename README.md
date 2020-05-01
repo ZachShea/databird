@@ -29,6 +29,7 @@ JSON and CSV data visualizer
         { mydata : '5', another: '12 text' }
     ]);
 `
+
 `
     displayJSON({ data: 
         { mydata : '1', another: 'some text', nest: { 
@@ -36,6 +37,7 @@ JSON and CSV data visualizer
         }}
     });
 `
+
 `
     displayCSV("first, second, third\n1, 2, 3\none, two, three");
 `
