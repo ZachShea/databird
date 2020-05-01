@@ -5,6 +5,7 @@ JSON and CSV data visualizer
 ## Example feature code
 
 `
+
     const Http = new XMLHttpRequest();
     const url='https://reqres.in/api/users?page=2';
     Http.open("GET", url);
@@ -28,16 +29,21 @@ JSON and CSV data visualizer
         { mydata : '4', another: '3 text' },
         { mydata : '5', another: '12 text' }
     ]);
+
 `
 
 `
+
     displayJSON({ data: 
         { mydata : '1', another: 'some text', nest: { 
             mykey: 'my value', 'another nest': { test: '123', testing: '456'}
         }}
     });
+    
 `
 
 `
+
     displayCSV("first, second, third\n1, 2, 3\none, two, three");
+    
 `
